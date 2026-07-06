@@ -189,4 +189,20 @@ saveBtn.addEventListener("click", async () => {
     saveBtn.disabled = false;
     saveSpinner.classList.add("d-none");
   }
+  
+});
+
+document.getElementById("add-student-btn").addEventListener("click", async () => {
+  const nameInput = document.getElementById("new-student-name");
+  const name = nameInput.value.trim();
+  if (!name) return;
+
+  try {
+    await db.collection("groups").doc(groupId)
+      .collection("students").add({ name });
+    nameInput.value = "";
+    await loadTeacherGroup(); // reload students + re-render
+  } catch (err) {
+    alert("Couldn't add student: " + err.message);
+  }
 });
