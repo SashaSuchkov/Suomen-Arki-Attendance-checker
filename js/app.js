@@ -134,7 +134,7 @@ async function loadAttendanceForDate(dateStr) {
       const data = docSnap.data();
       topicInput.value = data.topic || "";
       renderStudents(data.records || {});
-      saveStatus.textContent = "Already saved attendance for this date - can edit the attendance.";
+      saveStatus.textContent = "Already saved attendance for this date - can now edit the attendance.";
     } else {
       renderStudents({});
     }
