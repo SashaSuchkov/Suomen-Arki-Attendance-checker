@@ -14,7 +14,7 @@ const loginSpinner = document.getElementById("login-spinner");
 function setLoading(isLoading) {
   loginBtn.disabled = isLoading;
   loginSpinner.classList.toggle("d-none", !isLoading);
-  loginBtnText.textContent = isLoading ? "Входим..." : "Войти";
+  loginBtnText.textContent = isLoading ? "Logging in..." : "Login";
 }
 
 function showError(message) {
@@ -36,11 +36,11 @@ form.addEventListener("submit", async (e) => {
   } catch (err) {
     setLoading(false);
     if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
-      showError("Неверный email или пароль.");
+      showError("Wrong email or password.");
     } else if (err.code === "auth/too-many-requests") {
-      showError("Слишком много попыток. Попробуйте позже.");
+      showError("Too many attempts. Try again later.");
     } else {
-      showError("Не получилось войти: " + err.message);
+      showError("Couldn't log in: " + err.message);
     }
   }
 });

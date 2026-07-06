@@ -134,12 +134,12 @@ async function loadAttendanceForDate(dateStr) {
       const data = docSnap.data();
       topicInput.value = data.topic || "";
       renderStudents(data.records || {});
-      saveStatus.textContent = "Ранее уже сохранено для этой даты — можно отредактировать.";
+      saveStatus.textContent = "Already saved attendance for this date - can edit the attendance.";
     } else {
       renderStudents({});
     }
   } catch (err) {
-    showFatalError("Не удалось загрузить посещаемость за эту дату: " + err.message);
+    showFatalError("Couldn't load attendance for this date: " + err.message);
   }
 }
 
@@ -157,7 +157,7 @@ document.getElementById("mark-all-absent").addEventListener("click", () => {
 saveBtn.addEventListener("click", async () => {
   const dateStr = dateInput.value;
   if (!dateStr) {
-    saveStatus.textContent = "Выберите дату занятия.";
+    saveStatus.textContent = "Choose the lesson date.";
     saveStatus.classList.add("text-danger");
     return;
   }
@@ -181,10 +181,10 @@ saveBtn.addEventListener("click", async () => {
         updatedBy: currentUser.email
       }, { merge: true });
 
-    saveStatus.textContent = "Сохранено ✓";
+    saveStatus.textContent = "Saved ✓";
   } catch (err) {
     saveStatus.classList.add("text-danger");
-    saveStatus.textContent = "Ошибка сохранения: " + err.message;
+    saveStatus.textContent = "Saving error: " + err.message;
   } finally {
     saveBtn.disabled = false;
     saveSpinner.classList.add("d-none");

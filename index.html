@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Вход - Посещаемость Suomen Arki</title>
+<title>Login - Suomen Arki Attendance</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,9 +20,9 @@
         <div class="card-body p-4 p-md-5">
 
           <div class="text-center mb-4">
-            <div class="brand-badge mb-2">Посещаемость</div>
-            <h1 class="h4 mb-1">Вход для преподавателей</h1>
-            <p class="text-muted small mb-0">Введите данные, которые вам выдал администратор</p>
+            <div class="brand-badge mb-2">Attendance</div>
+            <h1 class="h4 mb-1">Teacher Login</h1>
+            <p class="text-muted small mb-0">Log in using the email and password provided by the admin</p>
           </div>
 
           <form id="login-form" novalidate>
@@ -31,14 +31,14 @@
               <input type="email" class="form-control" id="email" required autocomplete="username">
             </div>
             <div class="mb-3">
-              <label for="password" class="form-label">Пароль</label>
+              <label for="password" class="form-label">Password</label>
               <input type="password" class="form-control" id="password" required autocomplete="current-password">
             </div>
 
             <div id="login-error" class="alert alert-danger py-2 small d-none" role="alert"></div>
 
             <button type="submit" class="btn btn-primary w-100" id="login-btn">
-              <span id="login-btn-text">Войти</span>
+              <span id="login-btn-text">Login</span>
               <span id="login-spinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
             </button>
           </form>
@@ -47,7 +47,7 @@
       </div>
 
       <p class="text-center text-muted small mt-3 mb-0">
-        Забыли пароль? Обратитесь к администратору организации.
+        Forgot the password or don't have an account yet? Please contact the admin.
       </p>
 
     </div>
