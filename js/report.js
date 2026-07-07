@@ -1,7 +1,6 @@
-// Attendance report: view a date range across all students + export as CSV
+// Attendance report: view a whole month across all students + export as CSV
 
-const reportFromInput = document.getElementById("report-from");
-const reportToInput = document.getElementById("report-to");
+const reportMonthInput = document.getElementById("report-month");
 const generateReportBtn = document.getElementById("generate-report-btn");
 const reportSpinner = document.getElementById("report-spinner");
 const downloadCsvBtn = document.getElementById("download-csv-btn");
@@ -13,29 +12,35 @@ const reportEmpty = document.getElementById("report-empty");
 
 let reportData = null; // { dates: [...], topics: {date: topic}, matrix: { studentId: { date: true/false } } }
 
-// Default range: last 30 days up to today
-function defaultReportRange() {
-  const to = todayString();
-  const d = new Date();
-  d.setDate(d.getDate() - 30);
-  const offset = d.getTimezoneOffset();
-  const local = new Date(d.getTime() - offset * 60000);
-  const from = local.toISOString().split("T")[0];
+// Given "YYYY-MM", return the first and last calendar day of that month as "YYYY-MM-DD" strings.
+// Only local calendar arithmetic (.getDate()) is used here, never toISOString(), so this can't
+// drift by a day due to timezone conversion.
+function monthToDateRange(monthStr) {
+  const [year, month] = monthStr.split("-").map(Number); // month is 1-12
+  const from = `${monthStr}-01`;
+  const daysInMonth = new Date(year, month, 0).getDate(); // day 0 of "next month" = last day of this month
+  const to = `${monthStr}-${String(daysInMonth).padStart(2, "0")}`;
   return { from, to };
 }
 
+function currentMonthString() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
 function initReportRange() {
-  const { from, to } = defaultReportRange();
-  reportFromInput.value = from;
-  reportFromInput.max = todayString();
-  reportToInput.value = to;
-  reportToInput.max = todayString();
+  reportMonthInput.value = currentMonthString();
+  reportMonthInput.max = currentMonthString();
 }
 
 generateReportBtn.addEventListener("click", generateReport);
 downloadCsvBtn.addEventListener("click", downloadCsv);
 
+let reportRequestId = 0; // guards against an older, slower request resolving after a newer one
+
 async function generateReport() {
+  const requestId = ++reportRequestId;
+
   reportStatus.classList.remove("text-danger");
   reportStatus.textContent = "";
   reportTableWrapper.classList.add("d-none");
@@ -49,20 +54,15 @@ async function generateReport() {
     return;
   }
 
-  const fromDate = reportFromInput.value;
-  const toDate = reportToInput.value;
+  const monthStr = reportMonthInput.value;
 
-  if (!fromDate || !toDate) {
+  if (!monthStr) {
     reportStatus.classList.add("text-danger");
-    reportStatus.textContent = "Choose both a start and an end date.";
+    reportStatus.textContent = "Choose a month.";
     return;
   }
 
-  if (fromDate > toDate) {
-    reportStatus.classList.add("text-danger");
-    reportStatus.textContent = "The start date must be before the end date.";
-    return;
-  }
+  const { from: fromDate, to: toDate } = monthToDateRange(monthStr);
 
   generateReportBtn.disabled = true;
   reportSpinner.classList.remove("d-none");
@@ -70,9 +70,13 @@ async function generateReport() {
   try {
     const snap = await db.collection("groups").doc(groupId)
       .collection("attendance")
-      .where(firebase.firestore.FieldPath.documentId(), ">=", fromDate)
-      .where(firebase.firestore.FieldPath.documentId(), "<=", toDate)
-      .get();
+      .orderBy(firebase.firestore.FieldPath.documentId())
+      .startAt(fromDate)
+      .endAt(toDate)
+      .get({ source: "server" }); // bypass any local cache
+
+    // If a newer request has started since this one was fired, drop this result.
+    if (requestId !== reportRequestId) return;
 
     if (snap.empty) {
       reportEmpty.classList.remove("d-none");
@@ -221,7 +225,7 @@ function downloadCsv() {
   const link = document.createElement("a");
   link.href = url;
   const groupLabel = sanitizeFilename(groupNameEl && groupNameEl.textContent ? groupNameEl.textContent : "attendance");
-  link.download = `attendance_${groupLabel}_${dates[0]}_${dates[dates.length - 1]}.csv`;
+  link.download = `attendance_${groupLabel}_${reportMonthInput.value}.csv`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

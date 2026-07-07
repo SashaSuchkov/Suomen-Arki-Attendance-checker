@@ -52,8 +52,6 @@
       </div>
     </div>
 
-    <p class="text-muted mt-2">You can see previously recorded attendance by selecting a date.</p>
-
     <div class="card shadow-sm">
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -89,29 +87,25 @@
       </button>
     </div>
 
-    <hr class="my-4">
+    <p class="text-muted mt-2"></p>
 
     <div class="card shadow-sm">
       <div class="card-body">
         <h2 class="h6 mb-1">Attendance report</h2>
-        <p class="text-muted small">View attendance for a range of dates across all students, and export it as CSV.</p>
+        <p class="text-muted small">View attendance for a range of dates across all students, and export it as CSV to open in Excel.</p>
 
         <div class="row g-3 align-items-end mb-3">
-          <div class="col-6 col-md-3">
-            <label for="report-from" class="form-label">From</label>
-            <input type="date" id="report-from" class="form-control">
+          <div class="col-6 col-md-4">
+            <label for="report-month" class="form-label">Month</label>
+            <input type="month" id="report-month" class="form-control">
           </div>
-          <div class="col-6 col-md-3">
-            <label for="report-to" class="form-label">To</label>
-            <input type="date" id="report-to" class="form-control">
-          </div>
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-4">
             <button type="button" id="generate-report-btn" class="btn btn-primary w-100">
-              Generate
+              View the table
               <span id="report-spinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
             </button>
           </div>
-          <div class="col-6 col-md-3">
+          <div class="col-6 col-md-4">
             <button type="button" id="download-csv-btn" class="btn btn-outline-secondary w-100" disabled>
               Download CSV
             </button>
