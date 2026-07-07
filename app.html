@@ -89,6 +89,52 @@
       </button>
     </div>
 
+    <hr class="my-4">
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h6 mb-1">Attendance report</h2>
+        <p class="text-muted small">View attendance for a range of dates across all students, and export it as CSV.</p>
+
+        <div class="row g-3 align-items-end mb-3">
+          <div class="col-6 col-md-3">
+            <label for="report-from" class="form-label">From</label>
+            <input type="date" id="report-from" class="form-control">
+          </div>
+          <div class="col-6 col-md-3">
+            <label for="report-to" class="form-label">To</label>
+            <input type="date" id="report-to" class="form-control">
+          </div>
+          <div class="col-6 col-md-3">
+            <button type="button" id="generate-report-btn" class="btn btn-primary w-100">
+              Generate
+              <span id="report-spinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="col-6 col-md-3">
+            <button type="button" id="download-csv-btn" class="btn btn-outline-secondary w-100" disabled>
+              Download CSV
+            </button>
+          </div>
+        </div>
+
+        <div id="report-status" class="small text-muted mb-2"></div>
+
+        <div id="report-table-wrapper" class="table-responsive d-none">
+          <table class="table table-bordered table-sm align-middle text-center report-table">
+            <thead>
+              <tr id="report-table-head"></tr>
+            </thead>
+            <tbody id="report-table-body"></tbody>
+          </table>
+        </div>
+
+        <div id="report-empty" class="text-muted small d-none">
+          No attendance records found for the selected date range.
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </div>
@@ -98,5 +144,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 <script src="js/app.js"></script>
+<script src="js/report.js"></script>
 </body>
 </html>

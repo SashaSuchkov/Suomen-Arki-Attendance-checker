@@ -83,3 +83,29 @@ h1, h2, h3, .navbar-brand, .brand-badge {
 #save-status {
   min-height: 1.2em;
 }
+
+/* attendance report table */
+.report-table th {
+  font-weight: 600;
+  white-space: nowrap;
+  background-color: var(--bg-soft);
+}
+
+.report-table td,
+.report-table th {
+  vertical-align: middle;
+}
+
+.report-present {
+  color: var(--present);
+  font-weight: 700;
+}
+
+.report-absent {
+  color: var(--absent);
+  font-weight: 700;
+}
+
+.report-none {
+  color: #adb5bd;
+}
