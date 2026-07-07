@@ -213,7 +213,7 @@ function downloadCsv() {
       }
     });
 
-    row.push(`${presentCount}\\${recordedCount}`);
+    row.push(`${presentCount}/${recordedCount}`);
     rows.push(row);
   });
 
@@ -233,10 +233,12 @@ function downloadCsv() {
 }
 
 function csvEscape(value) {
-  const str = String(value === undefined || value === null ? "" : value);
+  let str = String(value === undefined || value === null ? "" : value);
+  str = str.replace(/\//g, '\\');
   if (new RegExp(`["\r\n${CSV_DELIMITER}]`).test(str)) {
     return '"' + str.replace(/"/g, '""') + '"';
   }
+  
   return str;
 }
 
