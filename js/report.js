@@ -213,7 +213,7 @@ function downloadCsv() {
       }
     });
 
-    row.push(`${presentCount}/${recordedCount}`);
+    row.push(`${presentCount}\\${recordedCount}`);
     rows.push(row);
   });
 
